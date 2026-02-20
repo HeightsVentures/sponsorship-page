@@ -2805,4 +2805,27 @@ function proceedToDonate(skip) {
       email:     email || "",
       anonymous: anonymous,
       volunteer: volunteer,
-      tier:      document.getElementById("donateModal
+      tier:      document.getElementById("donateModalTier").textContent,
+      timestamp: Date.now()
+    };
+    db.ref("leads").push(lead);
+  }
+
+  // If this is a single-sponsor event tier, mark it as payment pending
+  const singleTier = EVENT_TIERS.find(t => !t.multi && STRIPE_LINKS[t.id] === paymentUrl.split("?")[0]);
+  if (singleTier && firebaseReady && db) {
+    state.pendingTiers[singleTier.id] = true;
+    db.ref("sponsorships/pendingTiers/" + singleTier.id).set(true);
+    updateUI();
+  }
+
+  closeDonateModal();
+
+  if (paymentUrl) {
+    window.open(paymentUrl, "_blank");
+  }
+}
+
+</script>
+</body>
+</html>
