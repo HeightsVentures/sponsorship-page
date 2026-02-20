@@ -1411,6 +1411,18 @@
       .countdown-strip { flex-wrap: wrap; justify-content: center; gap: 4px; }
     }
   </style>
+  <!-- Auto-resize: sends page height to parent iframe in Squarespace -->
+  <script>
+    function sendHeight() {
+      const height = document.body.scrollHeight;
+      window.parent.postMessage({ iframeHeight: height }, '*');
+    }
+    // Send on load and whenever content changes
+    window.addEventListener('load', sendHeight);
+    window.addEventListener('resize', sendHeight);
+    const resizeObserver = new ResizeObserver(sendHeight);
+    resizeObserver.observe(document.body);
+  </script>
 </head>
 <body>
 
