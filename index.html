@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Scoop of Hope — 2026 Ice Cream Social Sponsorships</title>
-  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -1609,7 +1609,7 @@
   </div>
 
   <p class="questions-link">
-    Have questions before committing? <a href="/cdn-cgi/l/email-protection#1665797e5677657579796679707e79667338796471">Email us at <span class="__cf_email__" data-cfemail="93e0fcfbd3f2e0f0fcfce3fcf5fbfce3f6bdfce1f4">[email&#160;protected]</span></a> — we're happy to chat!
+    Have questions before committing? <a href="mailto:soh@ascoopofhope.org">Email us at soh@ascoopofhope.org</a> — we're happy to chat!
   </p>
 
   <!-- DIVIDER -->
@@ -1653,7 +1653,7 @@
   </div>
 
   <p class="questions-link" style="margin-top:20px">
-    Not sure which tier is right for you? <a href="/cdn-cgi/l/email-protection#64170b0c240517070b0b140b020c0b14014a0b1603">Drop us a note</a> — we'd love to help you make an impact.
+    Not sure which tier is right for you? <a href="mailto:soh@ascoopofhope.org">Drop us a note</a> — we'd love to help you make an impact.
   </p>
 
 </main>
@@ -2324,6 +2324,8 @@ function applyCampaignToUI() {
   EVENT_DATE = new Date((c.date || DEFAULT_CAMPAIGN.date) + "T10:00:00");
   // Share text
   window._shareText = `Help fuel recovery! A Scoop of Hope is raising funds for their ${c.title || DEFAULT_CAMPAIGN.title} on ${c.dateDisplay || DEFAULT_CAMPAIGN.dateDisplay}. Sponsor a backpack or event activity today!`;
+  // Rebuild share links with updated text
+  buildShareLinks();
 }
 
 
