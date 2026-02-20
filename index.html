@@ -1411,18 +1411,6 @@
       .countdown-strip { flex-wrap: wrap; justify-content: center; gap: 4px; }
     }
   </style>
-  <!-- Auto-resize: sends page height to parent iframe in Squarespace -->
-  <script>
-    function sendHeight() {
-      const height = document.body.scrollHeight;
-      window.parent.postMessage({ iframeHeight: height }, '*');
-    }
-    // Send on load and whenever content changes
-    window.addEventListener('load', sendHeight);
-    window.addEventListener('resize', sendHeight);
-    const resizeObserver = new ResizeObserver(sendHeight);
-    resizeObserver.observe(document.body);
-  </script>
 </head>
 <body>
 
@@ -1566,7 +1554,7 @@
       <div class="progress-pct" id="progressPct">0% funded</div>
       <div class="backpacks-funded" style="margin-top:16px">
         <div class="bf-num" id="backpackCount">0</div>
-        <div class="bf-label"><img src="images/yellow_backpack.png" alt="backpack" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> Backpacks Funded</div>
+        <div class="bf-label">Backpacks Funded</div>
       </div>
     </div>
   </div>
