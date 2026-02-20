@@ -1,0 +1,2820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Scoop of Hope — 2026 Ice Cream Social Sponsorships</title>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #7cccc3;
+      --teal-mid: #3c9da8;
+      --teal-dark: #007d88;
+      --teal-deep: #036872;
+      --teal-light: #b3d4d1;
+      --teal-pale: #d6ebed;
+      --yellow: #f2d26d;
+      --yellow-bright: #ffdc5d;
+      --yellow-deep: #fec02f;
+      --yellow-gold: #efa500;
+      --yellow-warm: #ddc185;
+      --cream: #f9f6e4;
+      --text: #036872;
+      --text-light: #3c7d77;
+      --white: #fcfefe;
+      --shadow: 0 4px 24px rgba(0,125,136,0.13);
+      --shadow-hover: 0 8px 32px rgba(0,125,136,0.22);
+      --radius: 20px;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal-dark) 50%, #025d66 100%);
+      padding: 48px 24px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 20% 50%, rgba(124,204,195,0.18) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 20%, rgba(242,210,109,0.12) 0%, transparent 50%);
+    }
+    .header-inner { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+    .header-logo { height: 90px; margin-bottom: 20px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2)); }
+    .header h1 {
+      font-family: 'Abril Fatface', cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--white);
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .header h1 span { color: var(--yellow); }
+    .header-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .header-date {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--teal-dark);
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 6px 20px;
+      border-radius: 100px;
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    /* COUNTDOWN TIMER */
+    .countdown-strip {
+      background: rgba(0,0,0,0.25);
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 24px;
+      margin-top: 20px;
+    }
+    .countdown-label {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-right: 4px;
+    }
+    .cd-unit {
+      text-align: center;
+      min-width: 48px;
+    }
+    .cd-num {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.6rem;
+      color: var(--yellow);
+      line-height: 1;
+    }
+    .cd-label {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .cd-sep {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.4rem;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 10px;
+    }
+
+    /* TAX DEDUCTIBLE BANNER */
+    .tax-banner {
+      background: linear-gradient(90deg, var(--teal-dark), #025d66);
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.9);
+      font-weight: 600;
+    }
+    .tax-banner strong { color: var(--yellow); }
+
+    /* SHARE BUTTON — floating */
+    .share-fab {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      z-index: 999;
+      background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-deep) 100%);
+      color: var(--teal-dark);
+      border: none;
+      border-radius: 100px;
+      padding: 14px 22px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(240,202,83,0.55);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .share-fab:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(240,202,83,0.65); }
+    .share-fab svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* SHARE MODAL */
+    .share-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .share-modal-overlay.open { display: flex; }
+    .share-modal {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+      max-width: 400px;
+      width: calc(100% - 40px);
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .share-modal h3 {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.5rem;
+      color: var(--teal-dark);
+      margin-bottom: 8px;
+    }
+    .share-modal p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .share-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .share-btn-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 10px;
+      border-radius: 12px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .share-btn-item:hover { transform: translateY(-2px); }
+    .share-facebook { background: #1877f2; color: white; }
+    .share-twitter  { background: #000; color: white; }
+    .share-linkedin { background: #0a66c2; color: white; }
+    .share-email    { background: var(--teal-dark); color: white; }
+    .share-copy {
+      width: 100%;
+      background: #f0f0f0;
+      color: var(--text);
+      margin-top: 4px;
+      padding: 12px;
+      border-radius: 12px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .share-copy:hover { background: #e0e0e0; }
+    .share-close {
+      margin-top: 16px;
+      background: none;
+      border: none;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+    }
+    .share-close:hover { color: var(--text); }
+
+
+    /* DONATION INFO MODAL */
+    .donate-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3,104,114,0.55);
+      backdrop-filter: blur(4px);
+      z-index: 1100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .donate-modal-overlay.open { display: flex; }
+    .donate-modal {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 40px 36px 32px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+      position: relative;
+      animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.92) translateY(16px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .donate-modal-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      background: none; border: none;
+      font-size: 1.5rem; cursor: pointer;
+      color: var(--text-light);
+      line-height: 1;
+      padding: 4px;
+    }
+    .donate-modal-close:hover { color: var(--text); }
+    .donate-modal-icon {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin: 0 auto 8px;
+      display: block;
+    }
+    .donate-modal h3 {
+      font-family: "Abril Fatface", cursive;
+      font-size: 1.6rem;
+      color: var(--teal-dark);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .donate-modal-tier {
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-bottom: 24px;
+    }
+    .donate-modal-tier strong { color: var(--teal-dark); }
+    .donate-field { margin-bottom: 16px; }
+    .donate-field label {
+      display: block;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .donate-field input[type="text"],
+    .donate-field input[type="email"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--teal-light);
+      border-radius: 12px;
+      font-family: "Nunito", sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .donate-field input:focus { border-color: var(--teal-mid); }
+    .donate-check-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0 24px;
+    }
+    .donate-check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .donate-check-item input[type="checkbox"] {
+      width: 20px; height: 20px;
+      margin-top: 1px; flex-shrink: 0;
+      accent-color: var(--teal-mid);
+      cursor: pointer;
+    }
+    .donate-check-item span {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .donate-check-item span em {
+      display: block;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+    .donate-modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .btn-skip {
+      flex: 0 0 auto;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: var(--teal-pale);
+      color: var(--teal-dark);
+      font-family: "Nunito", sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-skip:hover { background: var(--teal-light); }
+    .btn-proceed {
+      flex: 1;
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--teal-mid), var(--teal-dark));
+      color: white;
+      font-family: "Abril Fatface", cursive;
+      font-size: 1.05rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(0,125,136,0.3);
+    }
+    .btn-proceed:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,125,136,0.4);
+    }
+    .donate-modal-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-light);
+      font-weight: 600;
+      margin-top: 14px;
+    }
+
+    /* WAVE DIVIDER */
+    .wave {
+      display: block;
+      width: 100%;
+      margin-bottom: -2px;
+    }
+
+    /* TRACKER SECTION */
+    .tracker-section {
+      background: var(--white);
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+    .tracker-section h2 {
+      font-family: 'Abril Fatface', cursive;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      color: var(--teal-dark);
+      margin-bottom: 6px;
+    }
+    .tracker-section .tracker-sub {
+      font-size: 1rem;
+      color: var(--text-light);
+      margin-bottom: 36px;
+      font-weight: 600;
+    }
+    .tracker-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* ICE CREAM CONE SVG TRACKER */
+    .cone-tracker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .cone-img-wrap {
+      position: relative;
+      width: 180px;
+      height: 260px;
+    }
+    .cone-empty,
+    .cone-fill {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .cone-fill {
+      clip-path: inset(100% 0 0 0);
+      transition: clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .cone-pct-label {
+      position: absolute;
+      top: 26%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.5rem;
+      color: var(--teal-deep);
+      text-shadow: 0 1px 6px rgba(255,255,255,0.8);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* TRACKER STATS */
+    .tracker-stats {
+      text-align: left;
+      min-width: 220px;
+    }
+    .tracker-goal-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .tracker-amount {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 3rem;
+      color: var(--teal-dark);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .tracker-amount span { font-size: 1.5rem; }
+    .tracker-of {
+      font-size: 1rem;
+      color: var(--text-light);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .tracker-of strong { color: var(--teal-dark); }
+    .progress-bar-wrap {
+      background: #d6ebed;
+      border-radius: 100px;
+      height: 16px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal) 0%, var(--teal-dark) 100%);
+      border-radius: 100px;
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+      min-width: 0%;
+    }
+    .progress-pct {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-weight: 700;
+    }
+    .backpacks-funded {
+      margin-top: 16px;
+      background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-deep) 100%);
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: inline-block;
+    }
+    .backpacks-funded .bf-num {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 2rem;
+      color: var(--teal-dark);
+      line-height: 1;
+    }
+    .backpacks-funded .bf-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--teal-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* MAIN CONTENT */
+    .main { max-width: 960px; margin: 0 auto; padding: 0 20px 80px; }
+
+    /* SECTION HEADER */
+    .section-header {
+      text-align: center;
+      padding: 56px 0 32px;
+    }
+    .section-badge {
+      display: inline-block;
+      background: var(--teal);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 6px 18px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .section-header h2 {
+      font-family: 'Abril Fatface', cursive;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: var(--teal-dark);
+      margin-bottom: 10px;
+    }
+    .section-header p {
+      font-size: 1rem;
+      color: var(--text-light);
+      max-width: 560px;
+      margin: 0 auto;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    /* QUESTIONS LINK */
+    .questions-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+    .questions-link a {
+      color: var(--teal-dark);
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .questions-link a:hover { text-decoration: underline; }
+
+    /* EVENT TIERS GRID */
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .tier-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border: 2px solid transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .tier-card:hover:not(.taken) {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--teal);
+    }
+    .tier-card.taken {
+      opacity: 0.72;
+      background: #d6ebed;
+    }
+    .tier-card.pending {
+      border-color: var(--yellow-deep);
+      background: linear-gradient(135deg, #fffdf4 0%, #fff8e6 100%);
+    }
+    .btn-pending {
+      background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-deep) 100%);
+      color: var(--teal-deep);
+      font-weight: 800;
+      width: 100%;
+      text-align: center;
+      cursor: default;
+      font-size: 0.88rem;
+    }
+    .tier-card.taken::after {
+      content: '✓ SPONSORED';
+      position: absolute;
+      top: 16px; right: 16px;
+      background: var(--teal-dark);
+      color: var(--white);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+    .tier-multi-badge {
+      position: relative;
+      top: auto; right: auto;
+      background: var(--yellow);
+      color: var(--teal-dark);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      margin-bottom: 10px;
+    }
+    .tier-icon { display: none; }
+    .tier-img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 14px;
+    }
+    .tier-name {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.35rem;
+      color: var(--teal-dark);
+      margin-bottom: 8px;
+    }
+    .tier-desc {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      font-weight: 600;
+      flex: 1;
+    }
+    .tier-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+    .tier-price {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 2rem;
+      color: var(--teal-dark);
+    }
+    .tier-footer .btn,
+    .tier-footer button {
+      width: 100%;
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      transition: all 0.2s ease;
+      letter-spacing: 0.3px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+      color: var(--white);
+      box-shadow: 0 4px 14px rgba(53,116,111,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(53,116,111,0.45);
+    }
+    .btn-taken {
+      background: #b3d4d1;
+      color: var(--text-light);
+      cursor: not-allowed;
+    }
+    .btn-yellow {
+      background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-deep) 100%);
+      color: var(--teal-dark);
+      box-shadow: 0 4px 14px rgba(240,202,83,0.4);
+    }
+    .btn-yellow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(240,202,83,0.55);
+    }
+
+    /* General Support qty row inside card */
+    .general-qty-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .general-qty-row .qty-btn {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--teal);
+      background: var(--white);
+      color: var(--teal-dark);
+      font-weight: 900;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Nunito', sans-serif;
+    }
+    .general-qty-row .qty-btn:hover { background: var(--teal); color: white; }
+    .general-qty-row .qty-display {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.2rem;
+      color: var(--teal-dark);
+      min-width: 28px;
+      text-align: center;
+    }
+    .general-qty-label {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-weight: 700;
+    }
+
+    /* DIVIDER */
+    .section-divider {
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--teal), var(--yellow), var(--teal), transparent);
+      border-radius: 100px;
+      margin: 0 auto 0;
+      max-width: 400px;
+      opacity: 0.5;
+    }
+
+    /* BACKPACK TIERS */
+    .bp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 16px;
+    }
+    .bp-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px;
+      text-align: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border: 2px solid transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .bp-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--yellow);
+    }
+    .bp-icon { display: none; }
+    .bp-tier-img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .bp-name {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.1rem;
+      color: var(--teal-dark);
+      margin-bottom: 4px;
+    }
+    .bp-fills {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      min-height: 2.2em;
+      display: flex;
+      align-items: center;
+    }
+    .bp-price {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.6rem;
+      color: var(--teal-dark);
+      margin-bottom: 14px;
+    }
+    .bp-spacer { flex: 1; }
+    .bp-qty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .qty-btn {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--teal);
+      background: var(--white);
+      color: var(--teal-dark);
+      font-weight: 900;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Nunito', sans-serif;
+    }
+    .qty-btn:hover { background: var(--teal); color: white; }
+    .qty-display {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.2rem;
+      color: var(--teal-dark);
+      min-width: 28px;
+      text-align: center;
+    }
+    .bp-total {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    /* CUSTOM AMOUNT CARD */
+    .custom-card {
+      background: linear-gradient(135deg, var(--teal-dark) 0%, #025d66 100%);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      color: var(--white);
+      text-align: center;
+      box-shadow: var(--shadow-hover);
+      margin-top: 16px;
+    }
+    .custom-card h3 {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.6rem;
+      color: var(--yellow);
+      margin-bottom: 8px;
+    }
+    .custom-card p {
+      font-size: 0.95rem;
+      opacity: 0.85;
+      margin-bottom: 22px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .custom-input-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .custom-input-wrap {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 14px;
+      padding: 10px 16px;
+      gap: 8px;
+    }
+    .custom-input-wrap label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      opacity: 0.8;
+      white-space: nowrap;
+    }
+    .custom-input-wrap input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.5rem;
+      width: 70px;
+      text-align: center;
+    }
+    .custom-input-wrap input::placeholder { color: rgba(255,255,255,0.4); }
+    .custom-calc-result {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.4rem;
+      color: var(--yellow);
+      margin-bottom: 18px;
+      min-height: 36px;
+    }
+
+    /* IMPACT NOTE */
+    .impact-note {
+      background: linear-gradient(135deg, #d6ebed 0%, #b3d4d1 100%);
+      border-radius: var(--radius);
+      padding: 28px 28px;
+      margin-top: 48px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .impact-note .in-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .impact-note h4 {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.2rem;
+      color: var(--teal-dark);
+      margin-bottom: 6px;
+    }
+    .impact-note p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    /* BENEFITS BOX */
+    .benefits-box {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    .benefits-box h3 {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.3rem;
+      color: var(--teal-dark);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .benefits-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .benefit-item::before {
+      content: '✓';
+      width: 22px;
+      height: 22px;
+      background: var(--teal);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* BACKPACK COUNTER */
+    .bp-counter-wrap {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px 28px;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .bp-counter-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .bp-counter-num {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 4rem;
+      color: var(--teal-dark);
+      line-height: 1;
+    }
+    .bp-counter-num span {
+      font-size: 2rem;
+      color: var(--text-light);
+    }
+    .bp-counter-label {
+      text-align: left;
+    }
+    .bp-counter-label .big {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.3rem;
+      color: var(--teal-dark);
+      display: block;
+    }
+    .bp-counter-label .sub {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+    .bp-counter-bar-wrap {
+      background: #d6ebed;
+      border-radius: 100px;
+      height: 20px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .bp-counter-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--yellow) 0%, var(--yellow-deep) 100%);
+      border-radius: 100px;
+      transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+      min-width: 0%;
+      position: relative;
+    }
+    .bp-counter-bar-fill::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 6px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 100px;
+    }
+    .bp-counter-pct {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+    /* THANK YOU SPONSORS SECTION */
+    .sponsors-section {
+      background: var(--white);
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .sponsors-section h2 {
+      font-family: 'Abril Fatface', cursive;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      color: var(--teal-dark);
+      margin-bottom: 8px;
+    }
+    .sponsors-sub {
+      font-size: 1rem;
+      color: var(--text-light);
+      font-weight: 600;
+      margin-bottom: 44px;
+    }
+    .sponsors-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .sponsor-chip {
+      background: var(--cream);
+      border: 2px solid #b3d4d1;
+      border-radius: 16px;
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 140px;
+      transition: all 0.2s;
+    }
+    .sponsor-chip:hover { border-color: var(--teal); transform: translateY(-2px); }
+    .sponsor-chip img {
+      max-height: 50px;
+      max-width: 120px;
+      object-fit: contain;
+    }
+    .sponsor-chip-name {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1rem;
+      color: var(--teal-dark);
+    }
+    .sponsor-chip-tier {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+    }
+    .sponsors-empty {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-style: italic;
+      padding: 24px;
+    }
+    .sponsors-cta {
+      margin-top: 32px;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+    .sponsors-cta strong { color: var(--teal-dark); }
+
+    /* ADMIN PANEL */
+    .admin-toggle {
+      text-align: center;
+      padding: 20px;
+    }
+    .admin-toggle-btn {
+      background: none;
+      border: 1px dashed #ccc;
+      color: #bbb;
+      font-size: 0.75rem;
+      font-family: 'Nunito', sans-serif;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .admin-panel {
+      display: none;
+      background: #025d66;
+      border-radius: var(--radius);
+      padding: 32px;
+      margin: 0 20px 40px;
+      max-width: 920px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .admin-panel.open { display: block; }
+    .admin-panel h3 {
+      font-family: 'Abril Fatface', cursive;
+      color: var(--yellow);
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+    .admin-pw-wrap {
+      margin-bottom: 20px;
+    }
+    .admin-pw-wrap input {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 10px 16px;
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      width: 220px;
+      outline: none;
+      margin-right: 10px;
+    }
+    .admin-controls { display: none; }
+    .admin-controls.unlocked { display: block; }
+    .admin-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .admin-row label {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.9rem;
+      font-weight: 700;
+      min-width: 180px;
+    }
+    .admin-input {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 8px 14px;
+      color: white;
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.1rem;
+      width: 120px;
+      outline: none;
+    }
+    .admin-input-wide {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 8px 14px;
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      width: 260px;
+      outline: none;
+    }
+    .admin-checkbox {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    .admin-save {
+      margin-top: 20px;
+      background: var(--yellow);
+      color: var(--teal-dark);
+      border: none;
+      border-radius: 100px;
+      padding: 12px 28px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .admin-save:hover { background: var(--yellow-bright); transform: translateY(-2px); }
+
+    /* LEADS TABLE */
+    .leads-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      color: white;
+    }
+    .leads-table th {
+      background: rgba(255,255,255,0.1);
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 800;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .leads-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-weight: 600;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .leads-table tr:last-child td { border-bottom: none; }
+    .leads-table tr:hover td { background: rgba(255,255,255,0.05); }
+    .leads-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+    .leads-badge-yes  { background: rgba(124,204,195,0.3); color: #7cccc3; }
+    .leads-badge-no   { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); }
+
+    /* RESET BUTTONS */
+    .admin-reset-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .admin-reset-btn:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,220,93,0.4); }
+    .admin-reset-btn span:last-child {
+      display: flex;
+      flex-direction: column;
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+    .admin-reset-btn span em {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 2px;
+    }
+    .admin-reset-nuclear {
+      border-color: rgba(255,100,100,0.35);
+      background: rgba(255,80,80,0.08);
+    }
+    .admin-reset-nuclear:hover { background: rgba(255,80,80,0.18); border-color: rgba(255,100,100,0.6); }
+    .admin-msg {
+      color: var(--teal);
+      font-weight: 700;
+      margin-top: 12px;
+      font-size: 0.9rem;
+    }
+    .admin-section-title {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 20px 0 10px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 16px;
+    }
+    .admin-sponsor-list { margin-bottom: 12px; }
+    .admin-sponsor-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .admin-sponsor-row input { margin-right: 0; }
+    .admin-remove-btn {
+      background: rgba(255,80,80,0.2);
+      border: 1px solid rgba(255,80,80,0.4);
+      color: #ff8080;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .admin-add-btn {
+      background: rgba(125,205,196,0.2);
+      border: 1px solid rgba(125,205,196,0.4);
+      color: var(--teal);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: var(--teal-deep);
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .footer a { color: var(--yellow); text-decoration: none; font-weight: 700; }
+    .footer a:hover { text-decoration: underline; }
+    .footer-logo { height: 50px; margin-bottom: 14px; opacity: 0.9; }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeInUp 0.6s ease both; }
+    .fade-in-2 { animation: fadeInUp 0.6s 0.15s ease both; }
+    .fade-in-3 { animation: fadeInUp 0.6s 0.3s ease both; }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .tracker-container { flex-direction: column; align-items: center; }
+      .tracker-stats { text-align: center; }
+      .benefits-list { grid-template-columns: 1fr; }
+      .impact-note { flex-direction: column; }
+      .share-buttons { grid-template-columns: 1fr; }
+      .countdown-strip { flex-wrap: wrap; justify-content: center; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- DONATION INFO MODAL -->
+<div class="donate-modal-overlay" id="donateModal">
+  <div class="donate-modal">
+    <button class="donate-modal-close" onclick="closeDonateModal()">✕</button>
+    <img class="donate-modal-icon" id="donateModalIcon" src="" alt="Tier icon">
+    <h3>Before You Go!</h3>
+    <div class="donate-modal-tier" id="donateModalTier">Loading...</div>
+
+    <div class="donate-field">
+      <label for="donateName">Your Name</label>
+      <input type="text" id="donateName" placeholder="Jane Smith" autocomplete="name">
+    </div>
+    <div class="donate-field">
+      <label for="donateEmail">Email Address</label>
+      <input type="email" id="donateEmail" placeholder="jane@example.com" autocomplete="email">
+    </div>
+
+    <div class="donate-check-group">
+      <label class="donate-check-item">
+        <input type="checkbox" id="donateAnon">
+        <span>
+          Keep my donation anonymous
+          <em>Your name won't appear on the public sponsor wall</em>
+        </span>
+      </label>
+      <label class="donate-check-item">
+        <input type="checkbox" id="donateVolunteer">
+        <span>
+          Notify me about future volunteer opportunities
+          <em>We'll send occasional emails about ways to get involved</em>
+        </span>
+      </label>
+    </div>
+
+    <div class="donate-modal-actions">
+      <button class="btn-skip" onclick="proceedToDonate(true)">Skip →</button>
+      <button class="btn-proceed" onclick="proceedToDonate(false)">Continue to Payment</button>
+    </div>
+    <div class="donate-modal-note">
+      Your info is only used to personalize your experience and send updates you've opted into. We never sell or share your data.
+    </div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="share-modal-overlay" id="shareModal" onclick="if(event.target===this)closeShare()">
+  <div class="share-modal">
+    <h3>Spread the Word!</h3>
+    <p>Help us reach more sponsors by sharing this page with your network.</p>
+    <div class="share-buttons">
+      <a class="share-btn-item share-facebook" id="shareFb" href="#" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        Facebook
+      </a>
+      <a class="share-btn-item share-twitter" id="shareX" href="#" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X / Twitter
+      </a>
+      <a class="share-btn-item share-linkedin" id="shareLinkedIn" href="#" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a class="share-btn-item share-email" id="shareEmail" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>
+        Email
+      </a>
+    </div>
+    <button class="share-copy" onclick="copyLink()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      <span id="copyBtnText">Copy Page Link</span>
+    </button>
+    <button class="share-close" onclick="closeShare()">Close</button>
+  </div>
+</div>
+
+<!-- SHARE FAB -->
+<button class="share-fab" onclick="openShare()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+  Share This Page
+</button>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner fade-in">
+    <img src="images/header_banner.jpg" alt="A Scoop of Hope — Fueling Recovery, One Backpack at a Time" style="max-width:100%;height:auto;margin-bottom:16px;border-radius:12px;">
+    <span class="header-date" id="campaignDateDisplay">Saturday, May 30, 2026</span>
+
+    <!-- COUNTDOWN TIMER -->
+    <div style="margin-top:16px;">
+      <div class="countdown-strip">
+        <span class="countdown-label">Event In</span>
+        <div class="cd-unit"><div class="cd-num" id="cd-days">--</div><div class="cd-label">Days</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-num" id="cd-hours">--</div><div class="cd-label">Hours</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-num" id="cd-mins">--</div><div class="cd-label">Mins</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-num" id="cd-secs">--</div><div class="cd-label">Secs</div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- TAX BANNER -->
+<div class="tax-banner">
+  <strong>A Scoop of Hope is a 501(c)(3) nonprofit.</strong> Your sponsorship contribution may be tax-deductible — please consult your tax advisor for details.
+</div>
+
+<!-- WAVE -->
+<svg class="wave" viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <path d="M0,48 C360,0 1080,0 1440,48 L1440,0 L0,0 Z" fill="#007d88"/>
+</svg>
+
+<!-- TRACKER -->
+<section class="tracker-section fade-in-2">
+  <h2>Our 2026 Fundraising Goal</h2>
+  <p class="tracker-sub">Every scoop fills a backpack. Watch us fill up!</p>
+
+  <div class="tracker-container">
+        <div class="cone-tracker">
+      <div class="cone-img-wrap">
+        <!-- Faded grayscale: always shown as "empty" background -->
+        <img class="cone-empty" src="images/Scoopy.png" alt="Empty cone" style="filter: grayscale(100%) opacity(0.25);">
+        <!-- Full color: clipped to reveal from bottom up -->
+        <img class="cone-fill" src="images/Scoopy.png" alt="Filled cone" id="coneFillImg">
+        <!-- Percentage label -->
+        <div class="cone-pct-label" id="pctText">0%</div>
+      </div>
+    </div>
+
+    <div class="tracker-stats">
+      <div class="tracker-goal-label">Total Raised</div>
+      <div class="tracker-amount">$<span id="raisedDisplay">0</span></div>
+      <div class="tracker-of">of <strong id="totalGoalDisplay">$45,000</strong> goal</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+      </div>
+      <div class="progress-pct" id="progressPct">0% funded</div>
+      <div class="backpacks-funded" style="margin-top:16px">
+        <div class="bf-num" id="backpackCount">0</div>
+        <div class="bf-label"><img src="images/yellow_backpack.png" alt="backpack" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> Backpacks Funded</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="background:white;padding-bottom:8px">
+  <svg class="wave" viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,0 C360,40 1080,40 1440,0 L1440,40 L0,40 Z" fill="#fffdf4"/>
+  </svg>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- EVENT SPONSORSHIPS -->
+  <div class="section-header fade-in">
+    <div class="section-badge">Event Sponsorships</div>
+    <h2>Sponsor Our Event Experiences</h2>
+    <p>Each sponsorship covers a specific event element. Most are one-per-sponsor opportunities — when claimed, they're gone!</p>
+  </div>
+
+  <!-- EVENT EXPENSE COUNTER -->
+  <div class="bp-counter-wrap fade-in" style="margin-bottom:28px;">
+    <div class="bp-counter-top">
+      <div class="bp-counter-num" id="eventCounterNum">$0 <span>/ $7,500</span></div>
+      <div class="bp-counter-label">
+        <span class="big">Event Expenses Covered</span>
+        <span class="sub" id="eventCounterGoalLabel">Goal: $7,500 in event expenses</span>
+      </div>
+    </div>
+    <div class="bp-counter-bar-wrap">
+      <div class="bp-counter-bar-fill" id="eventCounterBar" style="width:0%; background: linear-gradient(90deg, var(--teal) 0%, var(--teal-dark) 100%);"></div>
+    </div>
+    <div class="bp-counter-pct" id="eventCounterPct">$0 of $7,500 in event expenses covered — be the first!</div>
+  </div>
+
+  <div class="benefits-box fade-in-2">
+    <h3>All Event Sponsors Receive</h3>
+    <div class="benefits-list">
+      <div class="benefit-item">Logo on event signage at your sponsored element</div>
+      <div class="benefit-item">Verbal recognition during event announcements</div>
+      <div class="benefit-item">Dedicated social media thank-you posts</div>
+      <div class="benefit-item">Recognition on our website before & after event</div>
+    </div>
+  </div>
+
+  <div class="event-grid fade-in-3" id="eventGrid">
+    <!-- Cards rendered by JS -->
+  </div>
+
+  <p class="questions-link">
+    Have questions before committing? <a href="mailto:soh@ascoopofhope.org">Email us at soh@ascoopofhope.org</a> — we're happy to chat!
+  </p>
+
+  <!-- DIVIDER -->
+  <div style="padding: 48px 0 0;">
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- BACKPACK SPONSORSHIPS -->
+  <div class="section-header fade-in">
+    <div class="section-badge" style="background:var(--yellow-deep);color:var(--teal-dark)">Backpack Sponsorships</div>
+    <h2>Fill a Backpack for Recovery</h2>
+    <p>Help us reach our goal of 300 backpacks. Each backpack goes directly to someone starting their recovery journey. Multiple sponsors welcome at every level!</p>
+  </div>
+
+  <!-- BACKPACK COUNTER -->
+  <div class="bp-counter-wrap fade-in">
+    <div class="bp-counter-top">
+      <div class="bp-counter-num" id="bpCounterNum">0 <span>/ 300</span></div>
+      <div class="bp-counter-label">
+        <span class="big"><img src="images/yellow_backpack.png" alt="backpack" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> Backpacks Funded</span>
+        <span class="sub" id="bpCounterGoalLabel">Goal: 300 backpacks for recovery</span>
+      </div>
+    </div>
+    <div class="bp-counter-bar-wrap">
+      <div class="bp-counter-bar-fill" id="bpCounterBar" style="width:0%"></div>
+    </div>
+    <div class="bp-counter-pct" id="bpCounterPct">0 of 300 backpacks funded — be the first!</div>
+  </div>
+
+  <!-- IMPACT NOTE -->
+  <div class="impact-note fade-in" style="margin-top:0;margin-bottom:28px;">
+    <div class="in-icon"><img src="images/yellow_backpack.png" alt="backpack" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;"></div>
+    <div>
+      <h4>What Goes in a Backpack?</h4>
+      <p>Each backpack includes <strong>Basic Toiletries</strong> (towel, deodorant, shampoo, toothbrush & more), <strong>Comforts of Home</strong> (socks, blanket, water bottle, hand warmers & more), and <strong>Resources to Start Fresh</strong> (journal, grocery gift card, bus pass, job resources). Together, these items provide dignity and practical support during a critical transition into recovery.</p>
+    </div>
+  </div>
+
+  <div class="bp-grid fade-in-2" id="bpGrid">
+    <!-- Cards rendered by JS -->
+  </div>
+
+  <p class="questions-link" style="margin-top:20px">
+    Not sure which tier is right for you? <a href="mailto:soh@ascoopofhope.org">Drop us a note</a> — we'd love to help you make an impact.
+  </p>
+
+</main>
+
+<!-- THANK YOU SPONSORS -->
+<section class="sponsors-section">
+  <h2>Thank You to Our Sponsors</h2>
+  <p class="sponsors-sub">These generous supporters are making the 2026 Ice Cream Social possible.</p>
+  <div class="sponsors-grid" id="sponsorsGrid">
+    <!-- Rendered by JS -->
+  </div>
+  <p class="sponsors-cta" id="sponsorsCta" style="display:none">
+    Want your name here? <strong>Become a sponsor today</strong> — scroll up to choose your level!
+  </p>
+</section>
+
+<!-- ADMIN TOGGLE -->
+<div class="admin-toggle">
+  <button class="admin-toggle-btn" onclick="toggleAdmin()">Admin Access</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="adminPanel">
+  <h3>🔐 Admin Panel</h3>
+  <div class="admin-pw-wrap">
+    <input type="password" id="adminPw" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="btn btn-yellow" onclick="checkPw()" style="padding:10px 20px;border:none;cursor:pointer;font-family:Nunito,sans-serif;font-weight:800;border-radius:100px;">Unlock</button>
+  </div>
+  <div class="admin-controls" id="adminControls">
+
+    <div class="admin-section-title">📊 Fundraising Totals</div>
+    <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:14px;font-weight:600">Enter how much has been raised in each category. These drive both counters and the main tracker.</p>
+    <div class="admin-row">
+      <label>Event Expenses Raised ($)</label>
+      <input type="number" class="admin-input" id="adminEventRaised" placeholder="0" min="0" oninput="updateAdminTotalGoal()">
+    </div>
+    <div class="admin-row">
+      <label><img src="images/yellow_backpack.png" alt="backpack" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> Backpack Donations Raised ($)</label>
+      <input type="number" class="admin-input" id="adminBackpackRaised" placeholder="0" min="0" oninput="updateAdminTotalGoal()">
+    </div>
+
+    <div class="admin-section-title">🎯 Goals & Pricing</div>
+    <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:14px;font-weight:600">Adjust goals and per-tier prices. The combined total goal updates automatically.</p>
+    <div class="admin-row">
+      <label>Event Expense Goal ($)</label>
+      <input type="number" class="admin-input" id="adminEventGoal" placeholder="7500" min="0" oninput="updateAdminTotalGoal()">
+    </div>
+    <div class="admin-row">
+      <label>Backpack Count Goal (#)</label>
+      <input type="number" class="admin-input" id="adminBpCount" placeholder="300" min="1" oninput="updateAdminTotalGoal()">
+    </div>
+    <div class="admin-row">
+      <label>Cost Per Backpack ($)</label>
+      <input type="number" class="admin-input" id="adminBpCost" placeholder="125" min="1" oninput="updateAdminTotalGoal()">
+    </div>
+
+    <div style="margin:8px 0 16px;padding:14px 18px;background:rgba(240,202,83,0.15);border:1px solid rgba(240,202,83,0.3);border-radius:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <span style="color:rgba(255,255,255,0.7);font-size:0.85rem;font-weight:700;">📐 Calculated Total Goal:</span>
+      <span id="adminComputedGoal" style="font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--yellow);">$45,000</span>
+      <span style="color:rgba(255,255,255,0.4);font-size:0.75rem;font-weight:600;">(Event Goal + Backpack Count × Cost Per Backpack)</span>
+    </div>
+
+    <div class="admin-section-title">💲 Event Tier Prices</div>
+    <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:14px;font-weight:600">Updating these prices will reflect live on the event sponsorship cards.</p>
+    <div id="adminTierPriceRows"></div>
+
+    <div class="admin-section-title">✅ Event Tier Status</div>
+    <div id="adminEventToggles"></div>
+
+    <div class="admin-section-title">Confirmed Sponsors</div>
+    <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:12px;font-weight:600">Add sponsors to display them publicly in the Thank You section. Logo URL is optional.</p>
+    <div class="admin-sponsor-list" id="adminSponsorList"></div>
+    <button class="admin-add-btn" onclick="addSponsorRow()">+ Add Sponsor</button>
+
+    <div class="admin-section-title">🎪 Campaign Settings</div>
+    <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:14px;font-weight:600">Update these each year to reuse this page for a new campaign. Changes update the page header and countdown instantly.</p>
+    <div class="admin-row">
+      <label>Campaign Title</label>
+      <input type="text" class="admin-input" id="adminCampaignTitle" placeholder="6th Annual Ice Cream Social" style="width:280px;">
+    </div>
+    <div class="admin-row">
+      <label>Tagline</label>
+      <input type="text" class="admin-input" id="adminCampaignTagline" placeholder="Sponsorship Opportunities" style="width:280px;">
+    </div>
+    <div class="admin-row">
+      <label>Hero Heading</label>
+      <input type="text" class="admin-input" id="adminHeroHeading" placeholder="Help Us Fuel Recovery" style="width:280px;">
+    </div>
+    <div class="admin-row">
+      <label>Event Date</label>
+      <input type="date" class="admin-input" id="adminCampaignDate" style="width:200px;">
+    </div>
+    <div class="admin-row">
+      <label>Date Display Text</label>
+      <input type="text" class="admin-input" id="adminCampaignDateDisplay" placeholder="Saturday, May 30, 2026" style="width:280px;">
+    </div>
+    <div class="admin-row">
+      <label>Event Location</label>
+      <input type="text" class="admin-input" id="adminCampaignLocation" placeholder="Lancaster, PA" style="width:280px;">
+    </div>
+
+    <div class="admin-section-title">🔄 Reset Tools</div>
+    <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:16px;font-weight:600">Use these at the start of a new campaign. <strong style="color:rgba(255,220,93,0.8);">All resets are permanent and sync to Firebase immediately.</strong> Export your leads before resetting!</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+      <button class="admin-reset-btn" onclick="resetTotals()">
+        <span style="font-size:1.2rem">💰</span>
+        <span>Reset Totals<em>Zero out all raised amounts</em></span>
+      </button>
+      <button class="admin-reset-btn" onclick="resetTierStatuses()">
+        <span style="font-size:1.2rem">🎯</span>
+        <span>Reset Tier Statuses<em>Clear all sponsored &amp; pending</em></span>
+      </button>
+      <button class="admin-reset-btn" onclick="resetSponsors()">
+        <span style="font-size:1.2rem"></span>
+        <span>Reset Sponsors<em>Clear sponsor wall</em></span>
+      </button>
+      <button class="admin-reset-btn" onclick="resetLeads()">
+        <span style="font-size:1.2rem">📋</span>
+        <span>Reset Leads<em>Delete all form submissions</em></span>
+      </button>
+    </div>
+    <button class="admin-reset-btn admin-reset-nuclear" onclick="resetEverything()" style="width:100%;margin-top:4px;">
+      <span style="font-size:1.2rem">☢️</span>
+      <span>Reset Everything — Fresh Campaign<em>Wipes totals, tiers, sponsors &amp; leads. Cannot be undone.</em></span>
+    </button>
+
+
+    <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:14px;font-weight:600">Everyone who filled out the donation form. Export as CSV to import into your CRM.</p>
+    <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+      <button onclick="loadLeads()" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;padding:8px 16px;border-radius:100px;cursor:pointer;">🔄 Load / Refresh Leads</button>
+      <button onclick="exportLeadsCSV()" style="background:var(--yellow);color:var(--teal-deep);font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;padding:8px 16px;border-radius:100px;cursor:pointer;border:none;">⬇️ Download CSV</button>
+      <label style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.6);font-size:0.8rem;font-weight:700;cursor:pointer;">
+        <input type="checkbox" id="leadsHideAnon" onchange="renderLeadsTable()" style="accent-color:var(--teal);">
+        Hide anonymous
+      </label>
+    </div>
+    <div id="leadsTableWrap" style="overflow-x:auto;border-radius:10px;background:rgba(0,0,0,0.2);padding:4px;">
+      <p style="color:rgba(255,255,255,0.35);font-size:0.82rem;font-weight:600;padding:12px;text-align:center;">Click "Load / Refresh Leads" to fetch submissions.</p>
+    </div>
+    <div id="leadsCount" style="color:rgba(255,255,255,0.4);font-size:0.78rem;font-weight:600;margin-top:8px;"></div>
+
+    <button class="admin-save" onclick="saveAdmin()">Save Changes to Firebase</button>
+    <div class="admin-msg" id="adminMsg"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <strong style="color:white;font-size:1.1rem">A Scoop of Hope</strong><br>
+  Fueling Recovery, One Backpack at a Time<br><br>
+
+  <a href="mailto:soh@ascoopofhope.org">soh@ascoopofhope.org</a> &nbsp;·&nbsp;
+  <a href="https://www.ascoopofhope.org" target="_blank">ascoopofhope.org</a>
+
+  <br><br>
+
+  <!-- Social Media Icons -->
+  <div style="display:flex;justify-content:center;align-items:center;gap:20px;margin-bottom:12px;">
+    <a href="https://www.facebook.com/ascoopofhope" target="_blank" title="Facebook" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;background:#1877f2;border-radius:50%;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/ascoopofhope" target="_blank" title="Instagram" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;background:radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);border-radius:50%;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/company/a-scoop-of-hope/" target="_blank" title="LinkedIn" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;background:#0a66c2;border-radius:50%;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+    </a>
+  </div>
+
+  <span style="opacity:0.5;font-size:0.8rem">Questions about sponsorship? <a href="mailto:soh@ascoopofhope.org">soh@ascoopofhope.org</a></span>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// =============================================
+// FIREBASE CONFIGURATION
+// =============================================
+const FIREBASE_CONFIG = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const ADMIN_PASSWORD = "ascoopofhope2026";
+
+const STRIPE_LINKS = {
+  iceCreamTruck:    "https://buy.stripe.com/PLACEHOLDER_ICE_CREAM_TRUCK",
+  bounceHouse:      "https://buy.stripe.com/PLACEHOLDER_BOUNCE_HOUSE",
+  entertainment:    "https://buy.stripe.com/PLACEHOLDER_ENTERTAINMENT",
+  kidsActivities:   "https://buy.stripe.com/PLACEHOLDER_KIDS_ACTIVITIES",
+  generalSupport:   "https://buy.stripe.com/PLACEHOLDER_GENERAL_SUPPORT",
+  milkshake:        "https://buy.stripe.com/PLACEHOLDER_MILKSHAKE",
+  kidsCone:         "https://buy.stripe.com/PLACEHOLDER_KIDS_CONE",
+  singleScoop:      "https://buy.stripe.com/PLACEHOLDER_SINGLE_SCOOP",
+  doubleScoop:      "https://buy.stripe.com/PLACEHOLDER_DOUBLE_SCOOP",
+  iceCreamSundae:   "https://buy.stripe.com/PLACEHOLDER_ICE_CREAM_SUNDAE",
+  custom:           "https://buy.stripe.com/PLACEHOLDER_CUSTOM_BACKPACK"
+};
+
+// =============================================
+// SPONSORSHIP DATA
+// =============================================
+const TIER_IMAGES = {
+  iceCreamTruck:  "images/Ice_Cream_Truck.png",
+  bounceHouse:    "images/Bounce_House.png",
+  entertainment:  "images/Entertainment.jpg",
+  kidsActivities: "images/Kids_Activities.png",
+  generalSupport: "images/Event_Setup_and_Essentials.jpg",
+};
+
+const EVENT_TIERS = [
+  { id: "iceCreamTruck",  icon: "", name: "Ice Cream Truck",          price: 2000, desc: "Ensures all attendees enjoy complimentary ice cream and cold beverages throughout the event.", multi: false },
+  { id: "bounceHouse",    icon: "", name: "Bounce House",             price: 1000, desc: "Ensures kids can enjoy bounce houses and the obstacle course during the event.", multi: false },
+  { id: "entertainment",  icon: "", name: "Entertainment",            price: 750,  desc: "Ensures live entertainment and engaging programming for guests throughout the event.", multi: false },
+  { id: "kidsActivities", icon: "", name: "Kid's Activities",         price: 500,  desc: "Ensures children can participate in face painting, hands-on activities, and family fun.", multi: false },
+  { id: "generalSupport", icon: "", name: "Event Setup & Essentials", price: 500,  desc: "Covers the essentials that make the event run smoothly — tables, chairs, tents, signage, and other day-of supplies.", multi: true }
+];
+
+const BP_IMAGES = {
+  milkshake:      "images/Milkshake.jpg",
+  kidsCone:       "images/Kids_Cone.jpg",
+  singleScoop:    "images/Single_Scoop.jpg",
+  doubleScoop:    "images/Double_Scoop.jpg",
+  iceCreamSundae: "images/Ice_Cream_Sundae.jpg",
+};
+
+const BACKPACK_TIERS = [
+  { id: "milkshake",      icon: "images/Milkshake.jpg",        name: "Milkshake",        price: 125,  fills: "1 Backpack",   qty: 1 },
+  { id: "kidsCone",       icon: "images/Kids_Cone.jpg",        name: "Kid's Cone",       price: 625,  fills: "5 Backpacks",  qty: 1 },
+  { id: "singleScoop",    icon: "images/Single_Scoop.jpg",     name: "Single Scoop",     price: 1250, fills: "10 Backpacks", qty: 1 },
+  { id: "doubleScoop",    icon: "images/Double_Scoop.jpg",     name: "Double Scoop",     price: 2500, fills: "20 Backpacks", qty: 1 },
+  { id: "iceCreamSundae", icon: "images/Ice_Cream_Sundae.jpg", name: "Ice Cream Sundae", price: 5000, fills: "40 Backpacks", qty: 1 }
+];
+
+// =============================================
+// DEFAULT GOALS (editable via admin)
+// =============================================
+const DEFAULT_GOALS = {
+  eventExpenseGoal: 7500,
+  backpackCount: 300,
+  backpackCost: 125,
+  tierPrices: {
+    iceCreamTruck:  2000,
+    bounceHouse:    1000,
+    entertainment:  750,
+    kidsActivities: 500,
+    generalSupport: 500
+  }
+};
+
+const DEFAULT_CAMPAIGN = {
+  title:    "6th Annual Ice Cream Social",
+  tagline:  "Sponsorship Opportunities",
+  date:     "2026-05-30",
+  dateDisplay: "Saturday, May 30, 2026",
+  location: "Lancaster, PA",
+  heroHeading: "Help Us Fuel Recovery"
+};
+
+// =============================================
+// STATE
+// =============================================
+let state = {
+  eventRaised:    0,
+  backpackRaised: 0,
+  eventTiers:   {},
+  pendingTiers: {},
+  sponsors: [],
+  goals:    JSON.parse(JSON.stringify(DEFAULT_GOALS)),
+  campaign: JSON.parse(JSON.stringify(DEFAULT_CAMPAIGN))
+};
+
+EVENT_TIERS.forEach(t => {
+  state.eventTiers[t.id]   = false;
+  state.pendingTiers[t.id] = false;
+});
+
+// Derived helpers
+function getTotalRaised()  { return state.eventRaised + state.backpackRaised; }
+function getTotalGoal()    { return state.goals.eventExpenseGoal + (state.goals.backpackCount * state.goals.backpackCost); }
+function getBackpacksFunded() { return Math.floor(state.backpackRaised / state.goals.backpackCost); }
+
+// =============================================
+// FIREBASE INIT
+// =============================================
+let db = null;
+let firebaseReady = false;
+
+try {
+  const app = firebase.initializeApp(FIREBASE_CONFIG);
+  db = firebase.database(app);
+  firebaseReady = true;
+  db.ref("sponsorships").on("value", (snap) => {
+    const data = snap.val();
+    if (data) {
+      if (typeof data.eventRaised    === "number") state.eventRaised    = data.eventRaised;
+      if (typeof data.backpackRaised === "number") state.backpackRaised = data.backpackRaised;
+      // legacy support for old totalRaised field
+      if (typeof data.totalRaised === "number" && !data.eventRaised && !data.backpackRaised) {
+        state.backpackRaised = data.totalRaised;
+      }
+      if (data.eventTiers)   state.eventTiers   = {...state.eventTiers,   ...data.eventTiers};
+      if (data.pendingTiers) state.pendingTiers  = {...state.pendingTiers, ...data.pendingTiers};
+      if (Array.isArray(data.sponsors)) state.sponsors = data.sponsors;
+      if (data.goals) state.goals = { ...DEFAULT_GOALS, ...data.goals, tierPrices: { ...DEFAULT_GOALS.tierPrices, ...(data.goals.tierPrices || {}) } };
+      if (data.campaign) state.campaign = { ...DEFAULT_CAMPAIGN, ...data.campaign };
+    }
+    applyGoalsToPricing();
+    updateUI();
+  });
+} catch(e) {
+  console.warn("Firebase not configured yet — using local state.");
+  updateUI();
+}
+
+
+// =============================================
+// COUNTDOWN TIMER
+// =============================================
+let EVENT_DATE = new Date(state.campaign.date + "T10:00:00");
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = EVENT_DATE - now;
+  if (diff <= 0) {
+    document.getElementById("cd-days").textContent  = "0";
+    document.getElementById("cd-hours").textContent = "0";
+    document.getElementById("cd-mins").textContent  = "0";
+    document.getElementById("cd-secs").textContent  = "0";
+    return;
+  }
+  const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const mins  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const secs  = Math.floor((diff % (1000 * 60)) / 1000);
+  document.getElementById("cd-days").textContent  = days;
+  document.getElementById("cd-hours").textContent = String(hours).padStart(2,"0");
+  document.getElementById("cd-mins").textContent  = String(mins).padStart(2,"0");
+  document.getElementById("cd-secs").textContent  = String(secs).padStart(2,"0");
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// =============================================
+// SHARE MODAL
+// =============================================
+const PAGE_URL   = window.location.href;
+const SHARE_TEXT = "Help fuel recovery! A Scoop of Hope is raising funds for their 6th Annual Ice Cream Social on May 30, 2026. Sponsor a backpack or event activity today!";
+
+function buildShareLinks() {
+  const encoded = encodeURIComponent(PAGE_URL);
+  const textEnc = encodeURIComponent(SHARE_TEXT);
+  document.getElementById("shareFb").href       = `https://www.facebook.com/sharer/sharer.php?u=${encoded}`;
+  document.getElementById("shareX").href        = `https://twitter.com/intent/tweet?url=${encoded}&text=${textEnc}`;
+  document.getElementById("shareLinkedIn").href = `https://www.linkedin.com/shareArticle?mini=true&url=${encoded}&title=${encodeURIComponent("A Scoop of Hope — 2026 Ice Cream Social Sponsorships")}&summary=${textEnc}`;
+  document.getElementById("shareEmail").href    = `mailto:?subject=${encodeURIComponent("Support A Scoop of Hope — Ice Cream Social 2026")}&body=${encodeURIComponent(SHARE_TEXT + "\n\n" + PAGE_URL)}`;
+}
+buildShareLinks();
+
+function openShare()  { document.getElementById("shareModal").classList.add("open"); }
+function closeShare() { document.getElementById("shareModal").classList.remove("open"); }
+
+function copyLink() {
+  navigator.clipboard.writeText(PAGE_URL).then(() => {
+    const btn = document.getElementById("copyBtnText");
+    btn.textContent = "✓ Copied!";
+    setTimeout(() => btn.textContent = "Copy Page Link", 2000);
+  });
+}
+
+// =============================================
+// GENERAL SUPPORT QTY STATE
+// =============================================
+let generalSupportQty = 1;
+
+function changeGeneralQty(delta) {
+  generalSupportQty = Math.max(1, generalSupportQty + delta);
+  const price = state.goals.tierPrices.generalSupport;
+  const total = generalSupportQty * price;
+  document.getElementById("generalQtyDisplay").textContent = generalSupportQty;
+  document.getElementById("generalTotalDisplay").textContent = "$" + total.toLocaleString();
+  const btn = document.getElementById("generalDonateBtn");
+  if (btn) btn.setAttribute("onclick", `openDonateModal('${buildStripeLink(STRIPE_LINKS.generalSupport, total)}', 'Event Setup & Essentials', '', ${total})`);
+}
+
+// =============================================
+// APPLY GOALS TO PRICING (sync state to EVENT_TIERS array)
+// =============================================
+function applyGoalsToPricing() {
+  EVENT_TIERS.forEach(t => {
+    if (state.goals.tierPrices[t.id] !== undefined) {
+      t.price = state.goals.tierPrices[t.id];
+    }
+  });
+}
+function renderEventTiers() {
+  const grid = document.getElementById("eventGrid");
+  grid.innerHTML = EVENT_TIERS.map(tier => {
+    const taken   = !tier.multi && state.eventTiers[tier.id];
+    const pending = !tier.multi && !taken && state.pendingTiers[tier.id];
+
+    if (tier.multi) {
+      // General Support — quantity selector
+      const total = generalSupportQty * tier.price;
+      return `
+        <div class="tier-card" id="card-${tier.id}">
+          <span class="tier-multi-badge">Multiple Sponsors Welcome</span>
+          <img class="tier-img" src="${TIER_IMAGES[tier.id]}" alt="${tier.name}">
+          <div class="tier-name">${tier.name}</div>
+          <div class="tier-desc">${tier.desc}</div>
+          <div class="general-qty-row">
+            <button class="qty-btn" onclick="changeGeneralQty(-1)">−</button>
+            <span class="qty-display" id="generalQtyDisplay">${generalSupportQty}</span>
+            <button class="qty-btn" onclick="changeGeneralQty(1)">+</button>
+            <span class="general-qty-label">× $${tier.price.toLocaleString()}</span>
+          </div>
+          <div class="tier-footer">
+            <div class="tier-price" id="generalTotalDisplay">$${total.toLocaleString()}</div>
+            <button id="generalDonateBtn" class="btn btn-primary" onclick="openDonateModal('${buildStripeLink(STRIPE_LINKS[tier.id], total)}', '${tier.name}', '${TIER_IMAGES[tier.id]}', ${total})">Sponsor This →</button>
+          </div>
+        </div>`;
+    }
+
+    return `
+      <div class="tier-card ${taken ? "taken" : pending ? "pending" : ""}" id="card-${tier.id}">
+        <img class="tier-img" src="${TIER_IMAGES[tier.id]}" alt="${tier.name}">
+        <div class="tier-name">${tier.name}</div>
+        <div class="tier-desc">${tier.desc}</div>
+        <div class="tier-footer">
+          <div class="tier-price">$${tier.price.toLocaleString()}</div>
+          ${taken
+            ? `<span class="btn btn-taken">✓ Sponsored</span>`
+            : pending
+            ? `<span class="btn btn-pending">Payment Pending</span>`
+            : `<button class="btn btn-primary" onclick="openDonateModal('${STRIPE_LINKS[tier.id]}', '${tier.name.replace(/'/g, "\\'")}', '${TIER_IMAGES[tier.id]}', ${tier.price})">Sponsor This →</button>`
+          }
+        </div>
+      </div>`;
+  }).join("");
+}
+
+// =============================================
+// RENDER BACKPACK TIERS
+// =============================================
+let bpQuantities = {};
+BACKPACK_TIERS.forEach(t => bpQuantities[t.id] = 1);
+
+// All variables ready — render the page now
+updateUI();
+
+function renderBpTiers() {
+  const grid = document.getElementById("bpGrid");
+
+  const tierCards = BACKPACK_TIERS.map(tier => {
+    const qty = bpQuantities[tier.id];
+    const total = qty * tier.price;
+    return `
+      <div class="bp-card">
+        <img class="bp-tier-img" src="${BP_IMAGES[tier.id]}" alt="${tier.name}">
+        <div class="bp-name">${tier.name}</div>
+        <div class="bp-fills">Fills ${tier.fills}</div>
+        <div class="bp-price">$${tier.price.toLocaleString()}</div>
+        <div class="bp-spacer"></div>
+        <div class="bp-qty">
+          <button class="qty-btn" onclick="changeQty('${tier.id}', -1)">−</button>
+          <span class="qty-display" id="qty-${tier.id}">${qty}</span>
+          <button class="qty-btn" onclick="changeQty('${tier.id}', 1)">+</button>
+        </div>
+        <div class="bp-total" id="total-${tier.id}">Total: $${total.toLocaleString()}</div>
+        <button class="btn btn-yellow" style="width:100%;text-align:center;display:block;margin-top:10px"
+          onclick="openDonateModal(buildStripeLink(STRIPE_LINKS['${tier.id}'], ${total}), '${tier.name.replace(/'/g, "\\'")}', '${tier.icon}', ${total})">Donate →</button>
+      </div>`;
+  });
+
+  const bpCost = state.goals.backpackCost;
+  const customCard = `
+    <div class="bp-card" style="border-color: var(--teal); background: linear-gradient(135deg, #d6ebed 0%, #d6ebed 100%);">
+      <div class="bp-name">Custom</div>
+      <div class="bp-fills">Any # of Backpacks</div>
+      <div class="bp-price">$${bpCost.toLocaleString()} each</div>
+      <div class="bp-spacer"></div>
+      <div class="bp-qty">
+        <button class="qty-btn" onclick="changeCustomQty(-1)">−</button>
+        <input type="number" id="customQty" value="1" min="1" max="999"
+          style="width:44px;text-align:center;border:none;background:none;font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--teal-dark);outline:none;"
+          oninput="calcCustom()">
+        <button class="qty-btn" onclick="changeCustomQty(1)">+</button>
+      </div>
+      <div class="bp-total" id="customResult">Total: $${bpCost.toLocaleString()}</div>
+      <button id="customDonateBtn" class="btn btn-yellow" style="width:100%;text-align:center;display:block;margin-top:10px"
+        onclick="openDonateModal(buildStripeLink(STRIPE_LINKS.custom, ${bpCost}), 'Custom Backpack Donation', '', ${bpCost})">Donate →</button>
+    </div>`;
+
+  grid.innerHTML = tierCards.join("") + customCard;
+}
+
+function buildStripeLink(base, amount) {
+  return base + "?prefilled_amount=" + (amount * 100);
+}
+
+function changeQty(id, delta) {
+  bpQuantities[id] = Math.max(1, (bpQuantities[id] || 1) + delta);
+  const tier = BACKPACK_TIERS.find(t => t.id === id);
+  const qty = bpQuantities[id];
+  const total = qty * tier.price;
+  document.getElementById("qty-" + id).textContent = qty;
+  document.getElementById("total-" + id).textContent = "Total: $" + total.toLocaleString();
+  // Update the donate button onclick with the new total
+  const cardIndex = BACKPACK_TIERS.findIndex(t => t.id === id) + 1;
+  const btn = document.querySelector(`#bpGrid .bp-card:nth-child(${cardIndex}) button.btn-yellow`);
+  if (btn) btn.setAttribute("onclick", `openDonateModal(buildStripeLink(STRIPE_LINKS['${id}'], ${total}), '${tier.name.replace(/'/g, "\\'")}', '${tier.icon}', ${total})`);
+}
+
+// =============================================
+// CUSTOM AMOUNT CALCULATOR
+// =============================================
+function changeCustomQty(delta) {
+  const input = document.getElementById("customQty");
+  if (!input) return;
+  const newVal = Math.max(1, (parseInt(input.value) || 1) + delta);
+  input.value = newVal;
+  calcCustom();
+}
+
+function updateEventCounter(raised, goal) {
+  const pct = Math.min(100, Math.round((raised / goal) * 100));
+
+  const numEl = document.getElementById("eventCounterNum");
+  if (numEl) {
+    const current = parseInt(numEl.dataset.current || 0);
+    if (current !== raised) {
+      animateDollar(numEl, current, raised, goal);
+      numEl.dataset.current = raised;
+    }
+  }
+  const bar = document.getElementById("eventCounterBar");
+  if (bar) bar.style.width = pct + "%";
+
+  const pctEl = document.getElementById("eventCounterPct");
+  if (pctEl) {
+    if (raised === 0) {
+      pctEl.textContent = `$0 of $${goal.toLocaleString()} in event expenses covered — be the first!`;
+    } else if (raised >= goal) {
+      pctEl.textContent = `Goal reached! All $${goal.toLocaleString()} in event expenses covered!`;
+    } else {
+      pctEl.textContent = `$${raised.toLocaleString()} of $${goal.toLocaleString()} covered — $${(goal - raised).toLocaleString()} to go!`;
+    }
+  }
+  const goalLabelEl = document.getElementById("eventCounterGoalLabel");
+  if (goalLabelEl) goalLabelEl.textContent = `Goal: $${goal.toLocaleString()} in event expenses`;
+}
+
+function updateBpCounter(count, bpGoal) {
+  const goal = bpGoal || state.goals.backpackCount;
+  const pct = Math.min(100, Math.round((count / goal) * 100));
+
+  const numEl = document.getElementById("bpCounterNum");
+  if (numEl) {
+    const current = parseInt(numEl.dataset.current || 0);
+    const prevGoal = parseInt(numEl.dataset.goal || 300);
+    if (current !== count || prevGoal !== goal) {
+      animateCount(numEl, current, count, goal);
+      numEl.dataset.current = count;
+      numEl.dataset.goal = goal;
+    }
+  }
+
+  // Always update the / goal in the main tracker backpack widget too
+  const bpCountEl = document.getElementById("backpackCount");
+  if (bpCountEl) bpCountEl.textContent = count;
+
+  const bar = document.getElementById("bpCounterBar");
+  if (bar) bar.style.width = pct + "%";
+
+  const pctEl = document.getElementById("bpCounterPct");
+  if (pctEl) {
+    if (count === 0) {
+      pctEl.textContent = `0 of ${goal.toLocaleString()} backpacks funded — be the first!`;
+    } else if (count >= goal) {
+      pctEl.textContent = `Goal reached! All ${goal.toLocaleString()} backpacks funded!`;
+    } else {
+      pctEl.textContent = `${count.toLocaleString()} of ${goal.toLocaleString()} backpacks funded — ${(goal - count).toLocaleString()} to go!`;
+    }
+  }
+  const goalLabelEl = document.getElementById("bpCounterGoalLabel");
+  if (goalLabelEl) goalLabelEl.textContent = `Goal: ${goal.toLocaleString()} backpacks`;
+}
+
+function animateCount(el, from, to, goal) {
+  const duration = 1200;
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const val = Math.round(from + (to - from) * ease);
+    el.innerHTML = `${val} <span>/ ${goal}</span>`;
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function animateDollar(el, from, to, goal) {
+  const duration = 1200;
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const val = Math.round(from + (to - from) * ease);
+    el.innerHTML = `$${val.toLocaleString()} <span>/ $${goal.toLocaleString()}</span>`;
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+
+function calcCustom() {
+  const input = document.getElementById("customQty");
+  if (!input) return;
+  const qty = parseInt(input.value) || 1;
+  const cost = state.goals.backpackCost;
+  const total = qty * cost;
+  const result = document.getElementById("customResult");
+  if (result) result.textContent = "Total: $" + total.toLocaleString();
+  const btn = document.getElementById("customDonateBtn");
+  if (btn) btn.setAttribute("onclick",
+    `openDonateModal(buildStripeLink(STRIPE_LINKS.custom, ${total}), 'Custom Backpack Donation (${qty} backpack${qty>1?"s":""})', '', ${total})`);
+}
+
+// =============================================
+// RENDER SPONSORS
+// =============================================
+function renderSponsors() {
+  const grid = document.getElementById("sponsorsGrid");
+  const cta  = document.getElementById("sponsorsCta");
+
+  if (!state.sponsors || state.sponsors.length === 0) {
+    grid.innerHTML = `<div class="sponsors-empty">Sponsors will appear here as they're confirmed — be the first!</div>`;
+    cta.style.display = "block";
+    return;
+  }
+
+  cta.style.display = "none";
+  grid.innerHTML = state.sponsors.map(s => `
+    <div class="sponsor-chip">
+      ${s.logoUrl ? `<img src="${s.logoUrl}" alt="${s.name} logo" onerror="this.style.display='none'">` : ""}
+      <div class="sponsor-chip-name">${s.name}</div>
+      ${s.tier ? `<div class="sponsor-chip-tier">${s.tier}</div>` : ""}
+    </div>
+  `).join("");
+}
+
+// =============================================
+// APPLY CAMPAIGN SETTINGS TO PAGE
+// =============================================
+function applyCampaignToUI() {
+  const c = state.campaign;
+  // Header
+  const subtitle = document.getElementById("campaignSubtitle");
+  if (subtitle) subtitle.textContent = (c.title || DEFAULT_CAMPAIGN.title) + " — " + (c.tagline || DEFAULT_CAMPAIGN.tagline);
+  const dateDisp = document.getElementById("campaignDateDisplay");
+  if (dateDisp) dateDisp.textContent = "" + (c.dateDisplay || DEFAULT_CAMPAIGN.dateDisplay);
+  // Update countdown target
+  EVENT_DATE = new Date((c.date || DEFAULT_CAMPAIGN.date) + "T10:00:00");
+  // Share text
+  window._shareText = `Help fuel recovery! A Scoop of Hope is raising funds for their ${c.title || DEFAULT_CAMPAIGN.title} on ${c.dateDisplay || DEFAULT_CAMPAIGN.dateDisplay}. Sponsor a backpack or event activity today!`;
+}
+
+
+function updateUI() {
+  applyCampaignToUI();
+  const raised = getTotalRaised();
+  const goal   = getTotalGoal();
+  const pct    = Math.min(100, Math.round((raised / goal) * 100));
+
+  document.getElementById("raisedDisplay").textContent = raised.toLocaleString();
+  document.getElementById("progressBar").style.width   = pct + "%";
+  document.getElementById("progressPct").textContent   = pct + "% funded";
+  document.getElementById("backpackCount").textContent = getBackpacksFunded();
+
+  const goalEl = document.getElementById("totalGoalDisplay");
+  if (goalEl) goalEl.textContent = "$" + goal.toLocaleString();
+
+  const coneFill = document.getElementById("coneFillImg");
+  if (coneFill) coneFill.style.clipPath = `inset(${100 - pct}% 0 0 0)`;
+  document.getElementById("pctText").textContent = pct + "%";
+
+  renderEventTiers();
+  renderSponsors();
+  renderBpTiers();
+  updateEventCounter(state.eventRaised, state.goals.eventExpenseGoal);
+  updateBpCounter(getBackpacksFunded(), state.goals.backpackCount);
+}
+
+// =============================================
+// ADMIN PANEL
+// =============================================
+function toggleAdmin() {
+  document.getElementById("adminPanel").classList.toggle("open");
+}
+
+function checkPw() {
+  if (document.getElementById("adminPw").value === ADMIN_PASSWORD) {
+    document.getElementById("adminControls").classList.add("unlocked");
+    document.getElementById("adminEventRaised").value    = state.eventRaised;
+    document.getElementById("adminBackpackRaised").value = state.backpackRaised;
+    document.getElementById("adminEventGoal").value      = state.goals.eventExpenseGoal;
+    document.getElementById("adminBpCount").value        = state.goals.backpackCount;
+    document.getElementById("adminBpCost").value         = state.goals.backpackCost;
+    EVENT_TIERS.forEach(t => {
+      const el = document.getElementById("adminPrice-" + t.id);
+      if (el) el.value = state.goals.tierPrices[t.id] || t.price;
+    });
+    updateAdminTotalGoal();
+    renderAdminToggles();
+    renderAdminSponsors();
+    loadCampaignToAdmin();
+  } else {
+    alert("Incorrect password.");
+  }
+}
+
+function updateAdminTotalGoal() {
+  const eventGoal = parseInt(document.getElementById("adminEventGoal")?.value) || 0;
+  const bpCount   = parseInt(document.getElementById("adminBpCount")?.value)   || 0;
+  const bpCost    = parseInt(document.getElementById("adminBpCost")?.value)     || 0;
+  const total     = eventGoal + (bpCount * bpCost);
+  const el = document.getElementById("adminComputedGoal");
+  if (el) el.textContent = "$" + total.toLocaleString();
+}
+
+function renderAdminToggles() {
+  // Tier price inputs
+  const priceWrap = document.getElementById("adminTierPriceRows");
+  if (priceWrap) {
+    priceWrap.innerHTML = EVENT_TIERS.map(tier => `
+      <div class="admin-row">
+        <label><img src="${BP_IMAGES[tier.id] || ''}" alt="${tier.name}" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:4px;">${tier.name}</label>
+        <input type="number" class="admin-input" id="adminPrice-${tier.id}"
+          value="${state.goals.tierPrices[tier.id] || tier.price}" min="0"
+          oninput="updateAdminTotalGoal()">
+      </div>
+    `).join("");
+  }
+
+  // Claimed toggles (single-sponsor tiers only)
+  const wrap = document.getElementById("adminEventToggles");
+  wrap.innerHTML = EVENT_TIERS.filter(t => !t.multi).map(tier => {
+    const taken   = state.eventTiers[tier.id];
+    const pending = !taken && state.pendingTiers[tier.id];
+    return `
+    <div class="admin-row" style="flex-wrap:wrap;gap:8px;">
+      <label style="flex:1;min-width:160px;">${tier.name} ($${tier.price.toLocaleString()})</label>
+      ${pending ? `
+        <span style="background:var(--yellow);color:var(--teal-deep);font-size:0.75rem;font-weight:800;padding:3px 10px;border-radius:100px;">Payment Pending</span>
+        <button onclick="clearPending('${tier.id}')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;font-size:0.75rem;font-weight:800;padding:3px 12px;border-radius:100px;cursor:pointer;">✕ Clear Pending</button>
+      ` : ""}
+      <input type="checkbox" class="admin-checkbox" id="admin-${tier.id}" ${taken ? "checked" : ""}
+        onchange="handleTierToggle('${tier.id}', this.checked)">
+      <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:600">
+        ${taken ? "✓ Confirmed Sponsored" : pending ? "→ Check box to confirm" : "Available"}
+      </span>
+    </div>`;
+  }).join("");
+}
+
+// Sponsor admin
+let adminSponsors = [];
+
+function renderAdminSponsors() {
+  adminSponsors = (state.sponsors || []).map(s => ({...s}));
+  refreshAdminSponsorList();
+}
+
+function refreshAdminSponsorList() {
+  const list = document.getElementById("adminSponsorList");
+  list.innerHTML = adminSponsors.map((s, i) => `
+    <div class="admin-sponsor-row">
+      <input type="text" class="admin-input-wide" placeholder="Sponsor name" value="${s.name || ""}" oninput="adminSponsors[${i}].name=this.value">
+      <input type="text" class="admin-input-wide" placeholder="Tier label (e.g. Ice Cream Truck)" value="${s.tier || ""}" oninput="adminSponsors[${i}].tier=this.value" style="width:200px">
+      <input type="text" class="admin-input-wide" placeholder="Logo URL (optional)" value="${s.logoUrl || ""}" oninput="adminSponsors[${i}].logoUrl=this.value" style="width:200px">
+      <button class="admin-remove-btn" onclick="removeSponsor(${i})">Remove</button>
+    </div>
+  `).join("") || `<p style="color:rgba(255,255,255,0.4);font-size:0.85rem;margin-bottom:8px;">No sponsors added yet.</p>`;
+}
+
+function addSponsorRow() {
+  adminSponsors.push({ name: "", tier: "", logoUrl: "" });
+  refreshAdminSponsorList();
+}
+
+function removeSponsor(i) {
+  adminSponsors.splice(i, 1);
+  refreshAdminSponsorList();
+}
+
+function handleTierToggle(tierId, checked) {
+  if (checked && firebaseReady && db) {
+    db.ref("sponsorships/pendingTiers/" + tierId).set(false);
+    state.pendingTiers[tierId] = false;
+  }
+}
+
+function clearPending(tierId) {
+  state.pendingTiers[tierId] = false;
+  if (firebaseReady && db) {
+    db.ref("sponsorships/pendingTiers/" + tierId).set(false);
+  }
+  renderAdminToggles();
+  renderEventTiers();
+}
+
+function saveAdmin() {
+  const eventRaised    = parseInt(document.getElementById("adminEventRaised").value)    || 0;
+  const backpackRaised = parseInt(document.getElementById("adminBackpackRaised").value) || 0;
+
+  const goals = {
+    eventExpenseGoal: parseInt(document.getElementById("adminEventGoal").value) || DEFAULT_GOALS.eventExpenseGoal,
+    backpackCount:    parseInt(document.getElementById("adminBpCount").value)   || DEFAULT_GOALS.backpackCount,
+    backpackCost:     parseInt(document.getElementById("adminBpCost").value)    || DEFAULT_GOALS.backpackCost,
+    tierPrices: {}
+  };
+  EVENT_TIERS.forEach(t => {
+    const el = document.getElementById("adminPrice-" + t.id);
+    goals.tierPrices[t.id] = parseInt(el?.value) || t.price;
+  });
+
+  const eventTiers = {};
+  EVENT_TIERS.filter(t => !t.multi).forEach(t => {
+    eventTiers[t.id] = document.getElementById("admin-" + t.id).checked;
+    // Clear pending if now confirmed as sponsored
+    if (eventTiers[t.id]) state.pendingTiers[t.id] = false;
+  });
+  const sponsors = adminSponsors.filter(s => s.name.trim());
+
+  const campaign = {
+    title:       document.getElementById("adminCampaignTitle").value.trim()       || DEFAULT_CAMPAIGN.title,
+    tagline:     document.getElementById("adminCampaignTagline").value.trim()     || DEFAULT_CAMPAIGN.tagline,
+    heroHeading: document.getElementById("adminHeroHeading").value.trim()         || DEFAULT_CAMPAIGN.heroHeading,
+    date:        document.getElementById("adminCampaignDate").value               || DEFAULT_CAMPAIGN.date,
+    dateDisplay: document.getElementById("adminCampaignDateDisplay").value.trim() || DEFAULT_CAMPAIGN.dateDisplay,
+    location:    document.getElementById("adminCampaignLocation").value.trim()    || DEFAULT_CAMPAIGN.location,
+  };
+
+  state.eventRaised    = eventRaised;
+  state.backpackRaised = backpackRaised;
+  state.eventTiers     = eventTiers;
+  state.sponsors       = sponsors;
+  state.goals          = goals;
+  state.campaign       = campaign;
+
+  applyGoalsToPricing();
+
+  if (firebaseReady && db) {
+    db.ref("sponsorships").set({ eventRaised, backpackRaised, eventTiers, pendingTiers: state.pendingTiers, sponsors, goals, campaign });
+    document.getElementById("adminMsg").textContent = "✓ Saved to Firebase!";
+  } else {
+    updateUI();
+    document.getElementById("adminMsg").textContent = "✓ Saved locally (Firebase not configured yet)";
+  }
+  setTimeout(() => document.getElementById("adminMsg").textContent = "", 3000);
+}
+
+// =============================================
+// CAMPAIGN SETTINGS ADMIN
+// =============================================
+function loadCampaignToAdmin() {
+  const c = state.campaign;
+  document.getElementById("adminCampaignTitle").value       = c.title       || DEFAULT_CAMPAIGN.title;
+  document.getElementById("adminCampaignTagline").value     = c.tagline     || DEFAULT_CAMPAIGN.tagline;
+  document.getElementById("adminHeroHeading").value         = c.heroHeading || DEFAULT_CAMPAIGN.heroHeading;
+  document.getElementById("adminCampaignDate").value        = c.date        || DEFAULT_CAMPAIGN.date;
+  document.getElementById("adminCampaignDateDisplay").value = c.dateDisplay || DEFAULT_CAMPAIGN.dateDisplay;
+  document.getElementById("adminCampaignLocation").value    = c.location    || DEFAULT_CAMPAIGN.location;
+}
+
+// =============================================
+// RESET TOOLS
+// =============================================
+function confirmReset(message, action) {
+  if (confirm("⚠️ " + message + "\n\nThis cannot be undone. Are you sure?")) {
+    action();
+    document.getElementById("adminMsg").textContent = "✓ Reset complete!";
+    setTimeout(() => document.getElementById("adminMsg").textContent = "", 3000);
+  }
+}
+
+function resetTotals() {
+  confirmReset("This will zero out all fundraising totals (event raised + backpack raised).", () => {
+    state.eventRaised = 0;
+    state.backpackRaised = 0;
+    document.getElementById("adminEventRaised").value    = 0;
+    document.getElementById("adminBackpackRaised").value = 0;
+    if (firebaseReady && db) {
+      db.ref("sponsorships/eventRaised").set(0);
+      db.ref("sponsorships/backpackRaised").set(0);
+    }
+    updateUI();
+  });
+}
+
+function resetTierStatuses() {
+  confirmReset("This will clear all sponsored and pending statuses — all tiers will show as available.", () => {
+    EVENT_TIERS.filter(t => !t.multi).forEach(t => {
+      state.eventTiers[t.id]   = false;
+      state.pendingTiers[t.id] = false;
+    });
+    if (firebaseReady && db) {
+      db.ref("sponsorships/eventTiers").set({});
+      db.ref("sponsorships/pendingTiers").set({});
+    }
+    renderAdminToggles();
+    renderEventTiers();
+  });
+}
+
+function resetSponsors() {
+  confirmReset("This will remove all sponsors from the public sponsor wall.", () => {
+    state.sponsors = [];
+    adminSponsors  = [];
+    if (firebaseReady && db) db.ref("sponsorships/sponsors").set([]);
+    refreshAdminSponsorList();
+    renderSponsors();
+  });
+}
+
+function resetLeads() {
+  confirmReset("This will permanently delete ALL lead form submissions. Export your CSV first!", () => {
+    leadsData = [];
+    if (firebaseReady && db) db.ref("leads").remove();
+    document.getElementById("leadsTableWrap").innerHTML =
+      `<p style="color:rgba(255,255,255,0.35);font-size:0.82rem;font-weight:600;padding:12px;text-align:center;">Leads cleared.</p>`;
+    document.getElementById("leadsCount").textContent = "";
+  });
+}
+
+function resetEverything() {
+  const firstConfirm = confirm("☢️ RESET EVERYTHING\n\nThis will permanently wipe:\n• All fundraising totals\n• All tier statuses & pending flags\n• All sponsors\n• All lead submissions\n\nExport your leads CSV first!\n\nAre you absolutely sure?");
+  if (!firstConfirm) return;
+  const secondConfirm = confirm("Last chance — this cannot be undone.\n\nClick OK to wipe everything and start fresh.");
+  if (!secondConfirm) return;
+
+  // Reset state
+  state.eventRaised    = 0;
+  state.backpackRaised = 0;
+  EVENT_TIERS.filter(t => !t.multi).forEach(t => {
+    state.eventTiers[t.id]   = false;
+    state.pendingTiers[t.id] = false;
+  });
+  state.sponsors = [];
+  adminSponsors  = [];
+  leadsData      = [];
+
+  // Reset admin inputs
+  document.getElementById("adminEventRaised").value    = 0;
+  document.getElementById("adminBackpackRaised").value = 0;
+
+  // Push to Firebase
+  if (firebaseReady && db) {
+    db.ref("sponsorships").set({
+      eventRaised: 0, backpackRaised: 0,
+      eventTiers: {}, pendingTiers: {}, sponsors: [],
+      goals: state.goals, campaign: state.campaign
+    });
+    db.ref("leads").remove();
+  }
+
+  // Refresh UI
+  renderAdminToggles();
+  refreshAdminSponsorList();
+  updateUI();
+  document.getElementById("leadsTableWrap").innerHTML =
+    `<p style="color:rgba(255,255,255,0.35);font-size:0.82rem;font-weight:600;padding:12px;text-align:center;">All data cleared — fresh campaign ready!</p>`;
+  document.getElementById("leadsCount").textContent = "";
+  document.getElementById("adminMsg").textContent = "✓ Everything reset! Fresh campaign ready.";
+  setTimeout(() => document.getElementById("adminMsg").textContent = "", 4000);
+}
+
+// =============================================
+// LEADS MANAGEMENT
+// =============================================
+let leadsData = [];
+
+function loadLeads() {
+  const wrap = document.getElementById("leadsTableWrap");
+  const countEl = document.getElementById("leadsCount");
+
+  if (!firebaseReady || !db) {
+    wrap.innerHTML = `<p style="color:rgba(255,220,93,0.7);font-size:0.82rem;font-weight:700;padding:12px;text-align:center;">⚠️ Firebase not connected yet — leads will appear here once Firebase is set up.</p>`;
+    return;
+  }
+
+  wrap.innerHTML = `<p style="color:rgba(255,255,255,0.35);font-size:0.82rem;font-weight:600;padding:12px;text-align:center;">Loading...</p>`;
+
+  db.ref("leads").once("value", (snap) => {
+    const data = snap.val();
+    if (!data) {
+      leadsData = [];
+      wrap.innerHTML = `<p style="color:rgba(255,255,255,0.35);font-size:0.82rem;font-weight:600;padding:12px;text-align:center;">No leads yet — form submissions will appear here.</p>`;
+      countEl.textContent = "";
+      return;
+    }
+    leadsData = Object.entries(data).map(([id, lead]) => ({ id, ...lead }));
+    leadsData.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    renderLeadsTable();
+  });
+}
+
+function renderLeadsTable() {
+  const wrap    = document.getElementById("leadsTableWrap");
+  const countEl = document.getElementById("leadsCount");
+  const hideAnon = document.getElementById("leadsHideAnon")?.checked;
+
+  let filtered = hideAnon ? leadsData.filter(l => !l.anonymous) : leadsData;
+
+  if (!filtered.length) {
+    wrap.innerHTML = `<p style="color:rgba(255,255,255,0.35);font-size:0.82rem;font-weight:600;padding:12px;text-align:center;">No leads match the current filter.</p>`;
+    countEl.textContent = "";
+    return;
+  }
+
+  const rows = filtered.map(l => {
+    const date = l.timestamp ? new Date(l.timestamp).toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }) : "—";
+    const time = l.timestamp ? new Date(l.timestamp).toLocaleTimeString("en-US", { hour:"numeric", minute:"2-digit" }) : "";
+    return `<tr>
+      <td title="${l.name || ""}">${l.name || "<em style='opacity:0.4'>—</em>"}</td>
+      <td title="${l.email || ""}">${l.email || "<em style='opacity:0.4'>—</em>"}</td>
+      <td title="${l.tier || ""}" style="max-width:160px;">${l.tier || "—"}</td>
+      <td><span class="leads-badge ${l.volunteer ? "leads-badge-yes" : "leads-badge-no"}">${l.volunteer ? "✓ Yes" : "No"}</span></td>
+      <td><span class="leads-badge ${l.anonymous ? "leads-badge-yes" : "leads-badge-no"}">${l.anonymous ? "✓ Yes" : "No"}</span></td>
+      <td style="white-space:nowrap;">${date}<br><span style="opacity:0.5;font-size:0.7rem">${time}</span></td>
+    </tr>`;
+  }).join("");
+
+  wrap.innerHTML = `
+    <table class="leads-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Tier</th>
+          <th>Volunteer</th>
+          <th>Anonymous</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+
+  const volunteerCount = filtered.filter(l => l.volunteer).length;
+  countEl.textContent = `${filtered.length} lead${filtered.length !== 1 ? "s" : ""} total · ${volunteerCount} volunteer opt-in${volunteerCount !== 1 ? "s" : ""}`;
+}
+
+function exportLeadsCSV() {
+  if (!leadsData.length) {
+    alert("No leads loaded yet — click \"Load / Refresh Leads\" first.");
+    return;
+  }
+
+  const hideAnon = document.getElementById("leadsHideAnon")?.checked;
+  const filtered = hideAnon ? leadsData.filter(l => !l.anonymous) : leadsData;
+
+  const headers = ["Name", "Email", "Tier", "Volunteer Opt-In", "Anonymous", "Date", "Time"];
+  const rows = filtered.map(l => {
+    const date = l.timestamp ? new Date(l.timestamp).toLocaleDateString("en-US") : "";
+    const time = l.timestamp ? new Date(l.timestamp).toLocaleTimeString("en-US", { hour:"numeric", minute:"2-digit" }) : "";
+    return [
+      `"${(l.name  || "").replace(/"/g, '""')}"`,
+      `"${(l.email || "").replace(/"/g, '""')}"`,
+      `"${(l.tier  || "").replace(/"/g, '""')}"`,
+      l.volunteer ? "Yes" : "No",
+      l.anonymous ? "Yes" : "No",
+      `"${date}"`,
+      `"${time}"`
+    ].join(",");
+  });
+
+  const csv = [headers.join(","), ...rows].join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href     = url;
+  a.download = `asoh-leads-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// =============================================
+// DONATION MODAL
+// =============================================
+let pendingPaymentUrl = null;
+
+function openDonateModal(paymentUrl, tierName, tierIcon, tierPrice) {
+  pendingPaymentUrl = paymentUrl;
+  document.getElementById("donateModal").classList.add("open");
+  document.getElementById("donateModalIcon").src = tierIcon || "";
+  document.getElementById("donateModalIcon").style.display = tierIcon ? "block" : "none";
+  document.getElementById("donateModalTier").innerHTML =
+    `You're sponsoring: <strong>${tierName}</strong>${tierPrice ? " — <strong>$" + tierPrice.toLocaleString() + "</strong>" : ""}`;
+  // Clear previous entries
+  document.getElementById("donateName").value     = "";
+  document.getElementById("donateEmail").value    = "";
+  document.getElementById("donateAnon").checked      = false;
+  document.getElementById("donateVolunteer").checked = false;
+}
+
+function closeDonateModal() {
+  document.getElementById("donateModal").classList.remove("open");
+  pendingPaymentUrl = null;
+}
+
+// Close on backdrop click
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("donateModal").addEventListener("click", function(e) {
+    if (e.target === this) closeDonateModal();
+  });
+});
+
+function proceedToDonate(skip) {
+  // Capture URL before closing (closeDonateModal nulls it)
+  const paymentUrl = pendingPaymentUrl;
+
+  const name      = document.getElementById("donateName").value.trim();
+  const email     = document.getElementById("donateEmail").value.trim();
+  const anonymous = document.getElementById("donateAnon").checked;
+  const volunteer = document.getElementById("donateVolunteer").checked;
+
+  if (!skip && !name && !email) {
+    document.getElementById("donateName").focus();
+    document.getElementById("donateName").style.borderColor = "var(--yellow-gold)";
+    setTimeout(() => document.getElementById("donateName").style.borderColor = "", 2000);
+    return;
+  }
+
+  // Save lead info to Firebase if we have something useful
+  if ((name || email) && firebaseReady && db) {
+    const lead = {
+      name:      name  || "Anonymous",
+      email:     email || "",
+      anonymous: anonymous,
+      volunteer: volunteer,
+      tier:      document.getElementById("donateModalTier").textContent,
+      timestamp: Date.now()
+    };
+    db.ref("leads").push(lead);
+  }
+
+  // If this is a single-sponsor event tier, mark it as payment pending
+  const singleTier = EVENT_TIERS.find(t => !t.multi && STRIPE_LINKS[t.id] === paymentUrl.split("?")[0]);
+  if (singleTier && firebaseReady && db) {
+    state.pendingTiers[singleTier.id] = true;
+    db.ref("sponsorships/pendingTiers/" + singleTier.id).set(true);
+    updateUI();
+  }
+
+  closeDonateModal();
+
+  if (paymentUrl) {
+    window.open(paymentUrl, "_blank");
+  }
+}
+
+</script>
+</body>
+</html>
