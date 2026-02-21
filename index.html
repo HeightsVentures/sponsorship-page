@@ -1401,6 +1401,104 @@
     .fade-in-2 { animation: fadeInUp 0.6s 0.15s ease both; }
     .fade-in-3 { animation: fadeInUp 0.6s 0.3s ease both; }
 
+    /* WELCOME POPUP */
+    .welcome-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3,104,114,0.7);
+      backdrop-filter: blur(6px);
+      z-index: 1200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .welcome-overlay.open { display: flex; }
+    .welcome-modal {
+      background: linear-gradient(155deg, #025d66 0%, #036872 60%, #007d88 100%);
+      border-radius: 24px;
+      padding: 48px 40px 36px;
+      max-width: 560px;
+      width: 100%;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.35);
+      position: relative;
+      animation: modalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .welcome-quote-mark {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 6rem;
+      color: var(--yellow);
+      line-height: 0.5;
+      opacity: 0.6;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .welcome-quote {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.92);
+      font-weight: 600;
+      line-height: 1.75;
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+    .welcome-divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--yellow), var(--yellow-deep));
+      border-radius: 100px;
+      margin: 0 auto 20px;
+    }
+    .welcome-attribution {
+      margin-bottom: 8px;
+    }
+    .welcome-attribution .attr-name {
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.2rem;
+      color: var(--yellow);
+      display: block;
+    }
+    .welcome-attribution .attr-title {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 4px;
+    }
+    .welcome-close {
+      margin-top: 28px;
+      background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-deep) 100%);
+      color: var(--teal-deep);
+      border: none;
+      border-radius: 100px;
+      padding: 14px 36px;
+      font-family: 'Abril Fatface', cursive;
+      font-size: 1.05rem;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(240,202,83,0.4);
+      transition: all 0.2s;
+    }
+    .welcome-close:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(240,202,83,0.55);
+    }
+    .welcome-skip {
+      display: block;
+      margin-top: 14px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.35);
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .welcome-skip:hover { color: rgba(255,255,255,0.6); }
+
     /* RESPONSIVE */
     @media (max-width: 600px) {
       .tracker-container { flex-direction: column; align-items: center; }
@@ -1413,6 +1511,21 @@
   </style>
 </head>
 <body>
+
+<!-- WELCOME POPUP -->
+<div class="welcome-overlay" id="welcomeModal">
+  <div class="welcome-modal">
+    <span class="welcome-quote-mark">"</span>
+    <p class="welcome-quote">I stepped into this work to keep my brothers alive in the only way I could, by turning my grief into service. I wanted to make sense of why they left so early. What keeps me going is the hope that if one person, or one family member stays the course because of this work, their life ripples outward in ways that help others, and reminds people they are not alone.</p>
+    <div class="welcome-divider"></div>
+    <div class="welcome-attribution">
+      <span class="attr-name">Alana Beittel</span>
+      <span class="attr-title">President &nbsp;·&nbsp; Sister &nbsp;·&nbsp; Champion</span>
+    </div>
+    <button class="welcome-close" onclick="closeWelcome()">See How You Can Help</button>
+    <button class="welcome-skip" onclick="closeWelcome()">Skip to page</button>
+  </div>
+</div>
 
 <!-- DONATION INFO MODAL -->
 <div class="donate-modal-overlay" id="donateModal">
@@ -1832,6 +1945,21 @@
 </footer>
 
 <script>
+// =============================================
+// WELCOME POPUP
+// =============================================
+function closeWelcome() {
+  document.getElementById("welcomeModal").classList.remove("open");
+  sessionStorage.setItem("welcomeSeen", "1");
+}
+
+// Show on first visit per session
+if (!sessionStorage.getItem("welcomeSeen")) {
+  setTimeout(() => {
+    document.getElementById("welcomeModal").classList.add("open");
+  }, 600);
+}
+
 // =============================================
 // FIREBASE CONFIGURATION
 // =============================================
