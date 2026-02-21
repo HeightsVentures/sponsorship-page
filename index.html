@@ -2505,6 +2505,9 @@ function applyLeadToSponsor(sponsorIndex, leadIndex) {
   adminSponsors[sponsorIndex].message = l.message || "";
   refreshAdminSponsorList();
 }
+
+function addSponsorRow() {
+  adminSponsors.push({ name: "", tier: "", logoUrl: "", message: "" });
   refreshAdminSponsorList();
 }
 
